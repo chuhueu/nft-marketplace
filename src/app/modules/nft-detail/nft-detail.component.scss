@@ -1,0 +1,19 @@
+.main-content-wrapper {
+  padding: 30px 6px;
+}
+
+.style-image {
+    object-fit: contain;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: initial;
+}
+
+.box {
+    border-radius: 10px;
+    border: 1px solid rgb(227, 227, 227);
+    overflow: hidden;
+    background-color: rgb(251, 253, 255);
+}

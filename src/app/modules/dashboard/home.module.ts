@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const exampleRoutes: Route[] = [
     {
@@ -16,7 +17,8 @@ const exampleRoutes: Route[] = [
     ],
     imports     : [
         RouterModule.forChild(exampleRoutes),
-        CommonModule
+        CommonModule,
+        MatTooltipModule
     ]
 })
 export class HomeModule

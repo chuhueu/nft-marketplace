@@ -1,5 +1,95 @@
-<div class="flex flex-col flex-auto min-w-0 overflow-hidden sm:overflow-y-auto" style="height: calc(100vh - 80px);">
-    <div class="flex-auto p-6 sm:p-10">
-        aaaa
+<div class="main-content-wrapper w-full min-w-0 overflow-hidden sm:overflow-y-auto" style="height: calc(100vh - 80px)">
+    <div class="px-6">
+        <ng-container *ngIf="nftDetail">
+            <fuse-card>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <img
+                                class="style-image"
+                                [src]="getImageFromMetaData(nftDetail.metadata.image)"
+                                (error)="handleImageError()"
+                                alt=""
+                            >
+                        </div>
+                        <div>
+                            <div class="font-bold text-4xl">{{nftDetail.name ?? ''}}</div>
+                            <div class="font-medium mt-5">{{nftDetail.metadata.description ?? ''}}</div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Owners:</div>
+                                <div
+                                    [matTooltip]="nftDetail.owner_of"
+                                    class="font-medium text-primary">
+                                    {{abbreviatedStr(nftDetail.owner_of)}}
+                                </div>
+                            </div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Contract Address:</div>
+                                <div
+                                    [matTooltip]="nftDetail.token_address"
+                                    class="font-medium text-primary">
+                                    {{abbreviatedStr(nftDetail.token_address)}}
+                                </div>
+                            </div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Token ID:</div>
+                                <div class="font-medium">{{nftDetail.token_id}}</div>
+                            </div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Token Standard:</div>
+                                <div class="font-medium">{{nftDetail.contract_type}}</div>
+                            </div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Chain:</div>
+                                <div class="font-medium">Goerli</div>
+                            </div>
+                            <div class="mt-5 flex gap-2">
+                                <div class="font-bold">Last Updated:</div>
+                                <div class="font-medium">{{formatDate(nftDetail.last_token_uri_sync)}}</div>
+                            </div>
+                            <div class="mt-5 p-6 box">
+                                <div>Current price</div>
+                                <div class="font-bold text-4xl">{{priceEth}} ETH</div>
+                                <div>${{priceEth * priceEthDefault}}</div>
+                                <div class="mt-3 flex items-center gap-3">
+                                    <button mat-flat-button color="primary">
+                                        <div class="flex items-center gap-2">
+                                            <mat-icon [svgIcon]="'heroicons_outline:shopping-bag'"></mat-icon>
+                                            <div>Buy now</div>
+                                        </div>
+                                    </button>
+                                    <button mat-stroked-button color="primary">
+                                        <div class="flex items-center gap-2">
+                                            <mat-icon [svgIcon]="'heroicons_outline:tag'"></mat-icon>
+                                            <div>Make offer</div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <div class="xl:col-span-2 flex flex-col flex-auto rounded-2xl overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <div class="p-2 text-xl font-semibold leading-6 tracking-tight text-primary mb-2 truncate">
+                                    Transaction
+                                </div>
+                                <button mat-stroked-button color="primary">
+                                    <div class="flex items-center gap-2">
+                                        <mat-icon [svgIcon]="'heroicons_outline:download'"></mat-icon>
+                                        <div>Download transaction</div>
+                                    </div>
+                                </button>
+                            </div>
+                            <ng-container *ngIf="nftHistoryTransactions.length > 0; else noData">
+                                <app-table-transaction [dataTable]="nftHistoryTransactions"></app-table-transaction>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </fuse-card>
+        </ng-container>
     </div>
 </div>
+
+<ng-template #noData>No transaction</ng-template>

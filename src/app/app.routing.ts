@@ -64,7 +64,7 @@ export const appRoutes: Route[] = [
     },
 
     {
-        path       : 'nft/view/:tokenAddress',
+        path       : 'nft/view/:tokenAddress/:tokenId',
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         component  : LayoutComponent,
@@ -72,5 +72,16 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         loadChildren: () => import('app/modules/nft-detail/nft-detail.module').then(m => m.NFTDetailModule)
+    },
+
+    {
+        path       : 'account',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        loadChildren: () => import('app/modules/profile/profile.module').then(m => m.ProfileModule)
     }
 ];

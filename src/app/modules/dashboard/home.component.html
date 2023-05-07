@@ -6,16 +6,21 @@
             <ng-container *ngFor="let data of dataList; trackBy: trackByFn">
                 <div
                     class="mt-3 cursor-pointer relative flex flex-col rounded-2xl shadow hover:shadow-lg overflow-hidden bg-card transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-80 duration-300"
-                    (click)="viewDetailNFT(data.token_address)"
+                    (click)="viewDetailNFT(data)"
                 >
                     <div class="flex flex-col flex-auto items-center text-center">
-                        <img class="set-image" [src]="getImageFromMetaData(data.metadata.image)" alt="">
+                        <img
+                            class="set-image"
+                            [src]="getImageFromMetaData(data.metadata.image)"
+                            (error)="handleImageError()"
+                            alt=""
+                        >
                     </div>
                     <div class="color-black-primary py-4 px-8 dark:text-primary-400 bg-gray-50 dark:bg-transparent dark:border-t">
                         <div class="font-bold">{{data.metadata.name}}</div>
                         <div class="mt-3 flex justify-between items-center">
-                            <div class="font-medium color-gray-primary">FLOOR</div>
-                            <div class="font-bold">{{getFakePrice(data.token_id)}} ETH</div>
+                            <div class="font-medium color-gray-primary">Address</div>
+                            <div [matTooltip]="data.token_address" class="font-bold">{{abbreviatedStr(data.token_address)}}</div>
                         </div>
                     </div>
                 </div>

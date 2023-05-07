@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit, OnDestroy
     tokenAddressTemporary = '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D';
     dataList: any[] = [];
     destroy$ = new Subject<void>();
+    errorImageUrl = 'https://testnets.opensea.io/static/images/placeholder.png';
+    isErrorImage = false;
     constructor(
         private _router: Router,
         private _ntfService: NFTService,
@@ -48,15 +50,45 @@ export class HomeComponent implements OnInit, OnDestroy
             return imgUrl;
         }
         const image = imgUrl.split('ipfs://')[1];
-        return `https://ipfs.io/ipfs/${image}`;
+        const imageUrl = `https://ipfs.io/ipfs/${image}`;
+        const searchString = 'ipfs';
+        const delimiter = '/';
+        let count = 0;
+        const newImageUrl = imageUrl
+            .split(delimiter)
+            .filter((item) => {
+            if (item === searchString) {
+                count++;
+                return count <= 1;
+            }
+            return true;
+            })
+            .join(delimiter);
+
+        return newImageUrl;
+    }
+
+    handleImageError(): void {
+        //https://testnets.opensea.io/static/images/placeholder.png
+        // this.isErrorImage = true;
+        // console.log(data);
     }
 
     getFakePrice(price: string): number {
-        return parseFloat(price)/100;
+        return parseFloat(price)/1000;
     }
 
-    viewDetailNFT(tokenAddress: string): void {
-        void this._router.navigate([`/nft/view/${tokenAddress}`]);
+    viewDetailNFT(nftData): void {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const {token_address, token_id} = nftData;
+        void this._router.navigate([`/nft/view/${token_address}/${token_id}`]);
+    }
+
+    abbreviatedStr(value: string): string {
+        if (!value) {
+            return '';
+        }
+        return value.substr(0, 4) + '....' + value.substr(-4);
     }
 
     ngOnDestroy(): void {

@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { NFTDetailComponent } from './nft-detail.component';
 import { FuseCardModule } from '@fuse/components/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
+import { ProfileComponent } from './profile.component';
 const exampleRoutes: Route[] = [
     {
         path     : '',
-        component: NFTDetailComponent
+        component: ProfileComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        NFTDetailComponent
+        ProfileComponent
     ],
     imports     : [
         RouterModule.forChild(exampleRoutes),
@@ -28,6 +28,6 @@ const exampleRoutes: Route[] = [
         MatIconModule
     ]
 })
-export class NFTDetailModule
+export class ProfileModule
 {
 }

@@ -31,4 +31,10 @@ export class NFTService {
             }
         });
     }
+
+    getNFTOwners(address: string, tokenId: string): Observable<any> {
+        return this._httpService.get(`${this.apiUrl}/owners`, {
+            params: {address, tokenId}
+        });
+    }
 }
