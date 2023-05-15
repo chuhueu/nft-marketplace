@@ -18,7 +18,7 @@
             class="w-full h-full px-16 sm:px-18"
             [formControl]="searchControl"
             [matAutocomplete]="matAutocomplete"
-            [placeholder]="'Search for a page or a contact'"
+            [placeholder]="'Search items, accounts'"
             (keydown)="onKeydown($event)"
             #barSearchInput>
         <mat-autocomplete
@@ -74,7 +74,7 @@
                 matInput
                 [formControl]="searchControl"
                 [matAutocomplete]="matAutocomplete"
-                [placeholder]="'Search for a page or a contact'"
+                [placeholder]="'Search items, collections, and accounts'"
                 (keydown)="onKeydown($event)">
         </mat-form-field>
         <mat-autocomplete

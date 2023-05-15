@@ -37,4 +37,10 @@ export class NFTService {
             params: {address, tokenId}
         });
     }
+
+    getNFTByWallet(address: string, chain: string): Observable<any> {
+        return this._httpService.get(`${this.apiUrl}/wallet`, {
+            params: {address, chain}
+        });
+    }
 }

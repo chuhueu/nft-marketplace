@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, filter, map, Subject, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations/public-api';
+import { SearchService } from './search.service';
 
 @Component({
     selector     : 'search',
@@ -29,7 +30,8 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy
     constructor(
         private _elementRef: ElementRef,
         private _httpClient: HttpClient,
-        private _renderer2: Renderer2
+        private _renderer2: Renderer2,
+        private _searchService: SearchService
     )
     {
     }
@@ -101,33 +103,9 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy
             .pipe(
                 debounceTime(this.debounce),
                 takeUntil(this._unsubscribeAll),
-                map((value) => {
-
-                    // Set the resultSets to null if there is no value or
-                    // the length of the value is smaller than the minLength
-                    // so the autocomplete panel can be closed
-                    if ( !value || value.length < this.minLength )
-                    {
-                        this.resultSets = null;
-                    }
-
-                    // Continue
-                    return value;
-                }),
-                // Filter out undefined/null/false statements and also
-                // filter out the values that are smaller than minLength
-                filter(value => value && value.length >= this.minLength)
             )
             .subscribe((value) => {
-                this._httpClient.post('api/common/search', {query: value})
-                    .subscribe((resultSets: any) => {
-
-                        // Store the result sets
-                        this.resultSets = resultSets;
-
-                        // Execute the event
-                        this.search.next(resultSets);
-                    });
+                this._searchService.setSearchValue(value);
             });
     }
 

@@ -1,12 +1,47 @@
-<div class="main-content-wrapper w-full min-w-0 overflow-hidden sm:overflow-y-auto" style="height: calc(100vh - 80px)">
-    <div class="px-6">
-        <!-- <ng-container *ngIf="nftDetail"> -->
-            <fuse-card>
-                <div class="p-6">
-                    <div>aaa</div>
+<div class="w-full overflow-hidden sm:overflow-y-auto" style="height: calc(100vh - 80px)">
+    <div class="flex flex-col flex-auto min-w-0">
+        <div class="flex flex-col shadow bg-card">
+            <div>
+                <img
+                    src="https://angular-material.fusetheme.com/assets/images/pages/profile/cover.jpg"
+                    alt="cover image"
+                    class="h-40 lg:h-80 object-cover"
+                />
+            </div>
+            <div class="flex flex-col flex-0 lg:flex-row items-center w-full mx-auto px-8 lg:h-18 bg-card">
+                <div class="-mt-26 lg:-mt-22 rounded-full">
+                    <img
+                        src="assets/images/avatars/MetaMask_Fox.svg.png"
+                        alt="avatar"
+                        class="w-32 h-32 rounded-full ring-4 ring-bg-card"
+                    />
                 </div>
-            </fuse-card>
-        <!-- </ng-container> -->
+                <div class="flex flex-col items-center lg:items-start mt-4 lg:mt-0 lg:ml-8">
+                    <div class="text-lg font-bold leading-none">Unnamed</div>
+                    <div class="mt-2 text-secondary">token: {{profileData.state.data.account}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content-wrapper">
+            <mat-tab-group animationDuration="0ms">
+                <mat-tab label="NFTs">
+                    <fuse-card class="block p-6">
+                        <div>NFTs</div>
+                    </fuse-card>
+                </mat-tab>
+                <mat-tab label="Transactions">
+                    <fuse-card class="block p-6">
+                        <div>Transactions</div>
+                    </fuse-card>
+                </mat-tab>
+                <mat-tab label="Created">
+                    <fuse-card class="block p-6">
+                        <div>Created</div>
+                    </fuse-card>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
     </div>
 </div>
 

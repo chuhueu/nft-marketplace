@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ProfileComponent } from './profile.component';
+import { MatTabsModule } from '@angular/material/tabs';
 const exampleRoutes: Route[] = [
     {
         path     : '',
@@ -25,7 +26,8 @@ const exampleRoutes: Route[] = [
         MatButtonModule,
         MatTooltipModule,
         SharedModule,
-        MatIconModule
+        MatIconModule,
+        MatTabsModule
     ]
 })
 export class ProfileModule

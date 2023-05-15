@@ -3,7 +3,7 @@ import { Route, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatTabsModule } from '@angular/material/tabs';
 const exampleRoutes: Route[] = [
     {
         path     : '',
@@ -18,7 +18,8 @@ const exampleRoutes: Route[] = [
     imports     : [
         RouterModule.forChild(exampleRoutes),
         CommonModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatTabsModule
     ]
 })
 export class HomeModule
