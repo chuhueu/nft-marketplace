@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy
                             metadata: JSON.parse(item.metadata)
                         };
                     }
-                });
+                }).slice(0, 50);
                 this.initDataList = JSON.parse(JSON.stringify(this.dataList));
                 this._changeDetectorRef.markForCheck();
             });
@@ -77,10 +77,10 @@ export class HomeComponent implements OnInit, OnDestroy
         return newImageUrl;
     }
 
-    handleImageError(): void {
-        //https://testnets.opensea.io/static/images/placeholder.png
-        // this.isErrorImage = true;
-        // console.log(data);
+    handleImageError(tokenId: string): void {
+        this.isErrorImage = true;
+        const image = document.getElementById(tokenId) as HTMLImageElement;
+        image.src = 'https://testnets.opensea.io/static/images/placeholder.png';
     }
 
     getFakePrice(price: string): number {

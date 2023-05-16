@@ -13,8 +13,9 @@
                                 <div class="flex flex-col flex-auto items-center text-center">
                                     <img
                                         class="set-image"
+                                        [id]="data.token_id + '-image'"
                                         [src]="getImageFromMetaData(data.metadata.image)"
-                                        (error)="handleImageError()"
+                                        (error)="handleImageError(data.token_id + '-image')"
                                         alt=""
                                     >
                                 </div>

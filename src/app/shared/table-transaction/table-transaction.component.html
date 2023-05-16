@@ -5,8 +5,8 @@
 
         <ng-container matColumnDef="transactionHash">
             <th mat-header-cell *matHeaderCellDef>Transaction Hash</th>
-            <td mat-cell *matCellDef="let record" class="text-primary" [matTooltip]="record.transaction_hash">
-                {{abbreviatedStr(record.transaction_hash)}}
+            <td mat-cell *matCellDef="let record" class="text-primary" [matTooltip]="record.transaction_hash ?? record.hash">
+                {{abbreviatedStr(record.transaction_hash ?? record.hash)}}
             </td>
         </ng-container>
 
@@ -22,21 +22,21 @@
 
         <ng-container matColumnDef="from">
             <th mat-header-cell *matHeaderCellDef>From</th>
-            <td mat-cell *matCellDef="let record" class="text-primary" [matTooltip]="record.seller_address">
-                {{abbreviatedStr(record.seller_address)}}
+            <td mat-cell *matCellDef="let record" class="text-primary" [matTooltip]="record.seller_address ?? record.from_address">
+                {{abbreviatedStr(record.seller_address ?? record.from_address)}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="to">
             <th mat-header-cell *matHeaderCellDef>To</th>
             <td mat-cell *matCellDef="let record" [matTooltip]="record.buyer_address">
-                {{abbreviatedStr(record.buyer_address)}}
+                {{abbreviatedStr(record.buyer_address ?? record.to_address)}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef>Price (USD)</th>
-            <td mat-cell *matCellDef="let record">{{record.price/100000000}} </td>
+            <td mat-cell *matCellDef="let record">{{(record.price ?? record.value)/100000000}} </td>
         </ng-container>
     </table>
 </div>

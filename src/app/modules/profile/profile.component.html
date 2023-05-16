@@ -24,7 +24,7 @@
         </div>
 
         <div class="main-content-wrapper">
-            <mat-tab-group animationDuration="0ms">
+            <mat-tab-group animationDuration="0ms" (selectedTabChange)="selectedTableChange($event)">
                 <mat-tab label="NFTs">
                     <fuse-card class="block p-6">
                         <div>NFTs</div>
@@ -32,7 +32,9 @@
                 </mat-tab>
                 <mat-tab label="Transactions">
                     <fuse-card class="block p-6">
-                        <div>Transactions</div>
+                        <ng-container *ngIf="transactions.length > 0">
+                            <app-table-transaction [dataTable]="transactions"></app-table-transaction>
+                        </ng-container>
                     </fuse-card>
                 </mat-tab>
                 <mat-tab label="Created">
