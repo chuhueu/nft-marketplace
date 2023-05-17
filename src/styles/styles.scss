@@ -11,6 +11,18 @@
     color: rgb(100, 109, 117);
 }
 
+.mat-dialog-container {
+    padding: 0;
+    overflow: hidden;
+    .mat-dialog-title {
+      margin: 0;
+    }
+    .mat-dialog-content {
+      margin: 0;
+      padding: 0;
+    }
+}
+
 // Custom scroll bar
 /* width */
 ::-webkit-scrollbar {

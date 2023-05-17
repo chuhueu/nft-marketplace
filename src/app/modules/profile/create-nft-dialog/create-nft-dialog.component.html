@@ -1,0 +1,29 @@
+<div mat-dialog-title class="dialog-header flex items-center justify-between">
+  <span class="heading p-4 w-full">Create New NFT</span>
+</div>
+
+<div mat-dialog-content class="dialog-content px-9 py-4">
+  <div>
+    <form [formGroup]="form" id="formNft">
+      <mat-form-field class="w-full">
+        <mat-label>Price</mat-label>
+        <input
+            matInput
+            placeholder="Enter price"
+            formControlName="price">
+        <mat-error>
+           Price is required
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+
+<div mat-dialog-actions class="flex items-center border-t mt-4 mb-0 px-6 py-4 bg-gray-50 dark:bg-gray-700">
+  <button mat-flat-button color="primary" (click)="submitForm()" form="formNft">
+      Ok
+  </button>
+  <button mat-stroked-button class="ml-2" (click)="onCancelForm(false)">
+      Cancel
+  </button>
+</div>

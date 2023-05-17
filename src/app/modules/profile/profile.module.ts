@@ -8,6 +8,10 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ProfileComponent } from './profile.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DialogCreateNFTComponent } from './create-nft-dialog/create-nft-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 const exampleRoutes: Route[] = [
     {
         path     : '',
@@ -17,7 +21,8 @@ const exampleRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        ProfileComponent
+        ProfileComponent,
+        DialogCreateNFTComponent
     ],
     imports     : [
         RouterModule.forChild(exampleRoutes),
@@ -27,7 +32,9 @@ const exampleRoutes: Route[] = [
         MatTooltipModule,
         SharedModule,
         MatIconModule,
-        MatTabsModule
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule
     ]
 })
 export class ProfileModule

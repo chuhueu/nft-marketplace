@@ -14,6 +14,7 @@ import {MatTableDataSource} from '@angular/material/table';
 export class TableTransactionComponent implements OnInit, OnDestroy
 {
     @Input() dataTable: any[] = [];
+    @Input() isSetMaxHeight: boolean = true;
     destroy$ = new Subject<void>();
     dataSource = new MatTableDataSource([]);
     tableColumn: string[] = ['transactionHash', 'block', 'dateTime', 'from', 'to', 'price'];
