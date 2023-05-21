@@ -7060,10 +7060,10 @@
   dependencies:
     "tslib" "^2.3.0"
 
-"ngx-toastr@14.2.2":
-  "integrity" "sha512-/Ajr9E0llr51Zij8WgnxQpe7a5JK+k1n07/uWJcQ112OBH0GCktHi8M8QfGvw5Ih67hG8iowrT+aHXHS49gZcQ=="
-  "resolved" "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-14.2.2.tgz"
-  "version" "14.2.2"
+"ngx-toastr@^15.2.2":
+  "integrity" "sha512-srdxKKf1+B/7z11M4Ty7bnkme2xjdUcnP/t7mNG/2gRM1h0P/7Lbz71FIQHuKZOCdnGdXjsT6OXU0dRvNyrkyg=="
+  "resolved" "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-15.2.2.tgz"
+  "version" "15.2.2"
   dependencies:
     "tslib" "^2.3.0"
 

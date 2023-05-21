@@ -3,6 +3,10 @@ import { NFTService } from 'app/services/nft.service';
 import {catchError, forkJoin, of, Subject, takeUntil, } from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { getAccount } from '@wagmi/core';
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { DialogWarningComponent } from 'app/shared/dialog-warning/dialog-warning.component';
 @Component({
     selector: 'app-nft-detail',
     templateUrl: './nft-detail.component.html',
@@ -19,11 +23,14 @@ export class NFTDetailComponent implements OnInit, OnDestroy
     selectedTokenId: string = '';
     priceEthDefault: number = 1901.84;
     priceEth: number = 0;
+    isLoggedIn = false;
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
         private _ntfService: NFTService,
-        private _changeDetectorRef: ChangeDetectorRef
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _toastrService: ToastrService,
+        public dialog: MatDialog
     ){}
 
     ngOnInit(): void {
@@ -31,6 +38,8 @@ export class NFTDetailComponent implements OnInit, OnDestroy
         this.selectedTokenId = this._route.snapshot.paramMap.get('tokenId');
         this.getNFTDetail();
         // this.getHistoryTransactions();
+        const { isConnected } = getAccount();
+        this.isLoggedIn = isConnected;
     }
 
     getNFTDetail(): void {
@@ -95,6 +104,13 @@ export class NFTDetailComponent implements OnInit, OnDestroy
 
     formatPriceToETH(price: string): number {
         return parseFloat(price)/this.priceEthDefault;
+    }
+
+    buyNFT(): void {
+        console.log(this.isLoggedIn);
+        if (!this.isLoggedIn) {
+            this.dialog.open(DialogWarningComponent);
+        }
     }
 
     ngOnDestroy(): void {
