@@ -40,9 +40,12 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
   }
 
   submitForm(): void {
+    this.toastr.success('NFT đã được tạo thành công');
     if (this.form.invalid) {
       return;
     }
+
+    console.log(this.form);
   }
 
 }

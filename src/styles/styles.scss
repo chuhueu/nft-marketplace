@@ -3,6 +3,7 @@
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
 
+@import '~ngx-toastr/toastr';
 .color-black-primary {
     color: rgb(4, 17, 29);
 }

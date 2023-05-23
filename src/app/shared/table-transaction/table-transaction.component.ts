@@ -53,6 +53,13 @@ export class TableTransactionComponent implements OnInit, OnDestroy
         return moment(date).format('YYYY-MM-DD HH:mm:ss');
     }
 
+    formatPrice(price: string): any {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        }).format(parseFloat(price));
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next(null);
         this.destroy$.complete();

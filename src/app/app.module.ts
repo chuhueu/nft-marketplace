@@ -29,6 +29,7 @@ const routerConfig: ExtraOptions = {
         BrowserAnimationsModule,
         RouterModule.forRoot(appRoutes, routerConfig),
 
+        CommonModule,
         // Fuse, FuseConfig & FuseMockAPI
         FuseModule,
         FuseConfigModule.forRoot(appConfig),
@@ -43,8 +44,8 @@ const routerConfig: ExtraOptions = {
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({}),
 
-        ToastrModule.forRoot(), // ToastrModule added
-        CommonModule
+        // Toastr
+        ToastrModule.forRoot(),
     ],
     bootstrap   : [
         AppComponent

@@ -71,11 +71,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:cube-transparent',
         link: ''
     },
-    {
-        id: 'user',
-        title: 'Users',
-        type: 'basic',
-        icon: 'heroicons_outline:user',
-        link: '/account'
-    }
+    // {
+    //     id: 'user',
+    //     title: 'Users',
+    //     type: 'basic',
+    //     icon: 'heroicons_outline:user',
+    //     link: '/account'
+    // }
 ];

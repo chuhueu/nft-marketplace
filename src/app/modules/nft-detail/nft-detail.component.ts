@@ -60,7 +60,7 @@ export class NFTDetailComponent implements OnInit, OnDestroy
                     metadata: JSON.parse(nftDetail.result[0].metadata)
                 };
                 this.nftHistoryTransactions = nftHistoryTransactions.result;
-                this.priceEth = (parseFloat(this.nftHistoryTransactions[0].price)/100000000)/this.priceEthDefault;
+                this.priceEth = (parseFloat(this.nftHistoryTransactions[0].price))/this.priceEthDefault;
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -106,11 +106,19 @@ export class NFTDetailComponent implements OnInit, OnDestroy
         return parseFloat(price)/this.priceEthDefault;
     }
 
-    buyNFT(): void {
-        console.log(this.isLoggedIn);
+    formatPrice(price: string): any {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        }).format(parseFloat(price));
+    }
+
+    buyNFT(name: string): void {
         if (!this.isLoggedIn) {
-            this.dialog.open(DialogWarningComponent);
+            this._toastrService.warning('Bạn phải kết nối tới ví điện tử thì mới có thể thực hiện giao dịch');
+            return;
         }
+        this._toastrService.success('Bạn đã mua thành công NFT ' + name);
     }
 
     ngOnDestroy(): void {
