@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector   : 'app-root',
@@ -10,7 +11,9 @@ export class AppComponent
     /**
      * Constructor
      */
-    constructor()
-    {
-    }
+    isLogged = localStorage.getItem('wagmi.connected') ?? '';
+    constructor(
+        private _router: Router
+    )
+    {}
 }

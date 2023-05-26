@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit, OnDestroy
     dataList: any[] = [];
     initDataList: any[] = [];
     destroy$ = new Subject<void>();
-    errorImageUrl = 'https://testnets.opensea.io/static/images/placeholder.png';
     isErrorImage = false;
     tabs = ['All', 'Art', 'Gaming', 'Photography'];
     constructor(
@@ -75,12 +74,6 @@ export class HomeComponent implements OnInit, OnDestroy
             .join(delimiter);
 
         return newImageUrl;
-    }
-
-    handleImageError(tokenId: string): void {
-        this.isErrorImage = true;
-        const image = document.getElementById(tokenId) as HTMLImageElement;
-        image.src = 'https://testnets.opensea.io/static/images/placeholder.png';
     }
 
     getFakePrice(price: string): number {

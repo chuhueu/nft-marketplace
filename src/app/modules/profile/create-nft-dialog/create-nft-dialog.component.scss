@@ -1,4 +1,94 @@
 .dialog-content {
-    max-height: 500px;
+    max-height: 700px;
     overflow: auto;
+}
+.box {
+    border: 2px dashed rgba(22, 22, 26, 0.1);
+    min-height: 150px;
+    padding: 32px 60px;
+    position: relative;
+    border-radius: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.file-text {
+    color: rgba(22, 22, 26, 0.6);
+    text-align: center;
+    vertical-align: inherit;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 500;
+}
+
+.preview-box {
+    border-width: 0px;
+    border-style: solid;
+    border-color: rgb(22, 22, 26);
+
+    .preview-content {
+        padding: 24px 32px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        text-align: center;
+        display: flex;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        background: transparent;
+        border: 1px solid rgba(22, 22, 26, 0.08);
+        border-radius: 16px;
+    }
+}
+
+.common-box {
+    padding: 16px;
+    text-align: left;
+    width: 100%;
+    color: rgb(22, 22, 26);
+    border: 1px solid rgba(22, 22, 26, 0.08);
+    border-radius: 16px;
+
+    .box-success {
+        -webkit-box-pack: center;
+        justify-content: center;
+        border-radius: 4px;
+        padding: 2px 6px;
+        background: rgba(40, 184, 51, 0.1);
+
+        .text-success {
+            line-height: 17px;
+            font-size: 14px;
+            color: rgb(40, 184, 51);
+        }
+    }
+}
+
+.choose-file-button {
+    border-color: transparent !important;
+    color: rgb(0, 0, 0) !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+input[type=number] {
+    &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+}
+
+input[type=file]::-webkit-file-upload-button {
+    visibility: hidden;
+    user-select: none;
+}
+
+input[type=file] {
+    display: none;
+    user-select: none;
 }

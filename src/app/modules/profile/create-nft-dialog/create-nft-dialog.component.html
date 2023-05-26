@@ -2,20 +2,119 @@
   <span class="font-bold text-2xl p-4 w-full">Create New NFT</span>
 </div>
 
-<div mat-dialog-content class="dialog-content px-9 py-4">
-  <div>
-    <form [formGroup]="form" id="formNft">
-      <mat-form-field class="w-full">
-        <mat-label>Price</mat-label>
-        <input
-            matInput
-            placeholder="Enter price"
-            formControlName="price">
-        <mat-error>
-           Price is required
-        </mat-error>
-      </mat-form-field>
-    </form>
+<div mat-dialog-content class="dialog-content px-9 py-4 relative">
+  <div class="grid grid-cols-3 gap-3 items-start">
+    <div class="col-span-2">
+        <form [formGroup]="form" id="formNft">
+            <div class="common-box mb-3">
+                <div class="flex gap-2">
+                    <img
+                        class="w-7 h-7 rounded-full"
+                        src="assets/images/avatars/MetaMask_Fox.svg.png">
+                    <div class="flex w-full items-center justify-between">
+                        <div class="font-bold">{{ abbreviatedStr(data) }}</div>
+                        <div class="box-success">
+                            <span class="text-success font-bold">Connected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="mb-1 font-bold">Upload file</div>
+                <div class="box mb-3 flex items-center w-full cursor-pointer">
+                    <div class="rounded-md overflow-hidden object-cover mb-2.5">
+                        <!-- <ng-container *ngIf="!uploadedImageUrl; else hasUploadedImage">
+                            <img [src]="fabricData?.image?.viewUrl" alt="" width="100%" height="100%"
+                                onerror="this.src='/assets/images/common/no-image.jpg'">
+                        </ng-container>
+                        <ng-template #hasUploadedImage>
+                            <img [src]="uploadedImageUrl" alt="" width="100%" height="100%"
+                                alt="PNG, GIF, WEBP, MP4 or MP3. Max 100mb.">
+                        </ng-template> -->
+                        <ng-container *ngIf="!uploadedImageUrl; else hasUploadedImage">
+                            <div class="file-text mb-2">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</div>
+                        </ng-container>
+                        <ng-template #hasUploadedImage>
+                            <img [src]="uploadedImageUrl" alt="" style="max-width: 350px"
+                                onerror="this.src='/assets/images/common/no-image.jpg'">
+                        </ng-template>
+                    </div>
+                    <input type="file" accept=".png, .jpg, .jpeg"
+                        (change)="onFileChange($event)" #fileUpload>
+                    <button mat-button type="button" class="choose-file-button" color="primary" (click)="fileUpload.click()">
+                        Choose File
+                    </button>
+                </div>
+            </div>
+            <mat-form-field class="w-full" floatLabel="always">
+                <mat-label class="font-bold">Price</mat-label>
+                <input
+                    matInput
+                    type="number"
+                    placeholder="Enter price"
+                    formControlName="price">
+                <mat-error>
+                    Price is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full" floatLabel="always">
+                <mat-label class="font-bold">Name</mat-label>
+                <input
+                    matInput
+                    placeholder="e.g. 'Redeemable T-Shirt with logo'"
+                    formControlName="name">
+                <mat-error>
+                    Name is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full" floatLabel="always">
+                <mat-label class="font-bold">Description <span class="font-normal">(Optional)</span></mat-label>
+                <textarea
+                    matInput placeholder="e. g. 'After purchasing you will be able to get the real T-Shirt'"
+                    formControlName="description"></textarea>
+            </mat-form-field>
+        </form>
+    </div>
+    <div class="sticky top-0">
+        <div class="font-bold mb-2">Preview</div>
+        <div class="preview-box h-full">
+            <div class="preview-content h-1/2">
+                <div class="rounded-md overflow-hidden object-cover mb-2.5">
+                    <ng-container *ngIf="uploadedImageUrl; else noPreview">
+                        <img [src]="uploadedImageUrl" alt="" width="100%" height="100%"
+                            onerror="this.src='/assets/images/common/no-image.jpg'">
+                    </ng-container>
+                    <ng-template #noPreview>
+                        <div>Upload file and choose collection to preview your brand new NFT</div>
+                    </ng-template>
+                    <div class="grid grid-cols-3">
+                        <div
+                            *ngIf="form.controls.name.value && uploadedImageUrl"
+                            class="mt-2 text-left col-span-2">
+                            <div class="font-medium">Name</div>
+                            <div class="mt-2 font-bold break-words">{{form.controls.name.value}}</div>
+                        </div>
+
+                        <div
+                            *ngIf="form.controls.price.value && uploadedImageUrl"
+                            class="mt-2 text-left">
+                            <div class="font-medium">Price</div>
+                            <div class="mt-2 font-bold break-words">{{form.controls.price.value}} ETH</div>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="form.controls.description.value && uploadedImageUrl"
+                        class="mt-2 text-left">
+                        <div class="font-medium">Description</div>
+                        <div class="mt-2 font-bold">{{form.controls.description.value}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </div>
 

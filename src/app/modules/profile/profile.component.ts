@@ -6,7 +6,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { DialogCreateNFTComponent } from './create-nft-dialog/create-nft-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -30,18 +30,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private _nftService: NFTService,
         public _dialog: MatDialog,
+        private _route: ActivatedRoute
     ) {}
 
     // Life cycle
 
     ngOnInit(): void {
-        console.log(this.profileData);
         this.getNftByWallet();
     }
 
     showCreateNFT(): void {
         this._dialog.open(DialogCreateNFTComponent, {
             ...this.matDialogConfig,
+            data: this.profileData.state.data.account
         }).afterClosed().subscribe((result) => {
             console.log(result);
         });
@@ -52,8 +53,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
             return;
         }
         const { account, chain } = this.profileData.state.data;
-        const chainId = chain.id === 11155111 && chain.unsupported ? '0xaa36a7' : '0x' + chain.id;
-        this._nftService.getNFTByWallet('0xd8da6bf26964af9d7eed9e03e53415d37aa96045', '0x1') // TODO: change for later
+        console.log(account);
+        let chainId = null;
+        if (chain) {
+            chainId = chain.id === 11155111 && chain.unsupported ? '0xaa36a7' : '0x' + chain.id;
+        }
+        this._nftService.getNFTByWallet('0xd8da6bf26964af9d7eed9e03e53415d37aa96045', chainId) // TODO: change for later
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 if (!data) {

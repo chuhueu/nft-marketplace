@@ -13,6 +13,9 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   form: FormGroup;
   addUser: string;
+  fileUpload: File;
+  uploadedImageUrl: string | ArrayBuffer;
+  noImage = 'https://testnets.opensea.io/static/images/placeholder.png';
   constructor(
     public dialogRef: MatDialogRef<DialogCreateNFTComponent>,
     private _formBuilder: FormBuilder,
@@ -26,7 +29,10 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
 
   initFormGroup(): void {
     this.form = this._formBuilder.group({
-        price: [null, Validators.required]
+        price: [null, Validators.required],
+        name: [null, Validators.required],
+        fileUpload: [null, Validators.required],
+        description: [null]
     });
   }
 
@@ -38,6 +44,26 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
   onCancelForm(itemRef: any): void {
     this.dialogRef.close(itemRef);
   }
+
+  onFileChange(event: Event): void {
+    const reader = new FileReader();
+    const target = event.target as HTMLInputElement;
+    const file: File = target.files[0];
+    if (target.files && file) {
+      this.fileUpload = file;
+      reader.readAsDataURL(file);
+      reader.onload = (): void => {
+        this.uploadedImageUrl = reader.result;
+      };
+    }
+  }
+
+  abbreviatedStr(value: string): string {
+    if (!value) {
+        return '';
+    }
+    return value.substr(0, 4) + '....' + value.substr(-4);
+}
 
   submitForm(): void {
     this.toastr.success('NFT đã được tạo thành công');

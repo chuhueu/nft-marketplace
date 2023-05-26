@@ -42,7 +42,7 @@
                                     class="object-cover set-image"
                                     [id]="data.token_id + '-image'"
                                     [src]="getImageFromMetaData(data.metadata.image)"
-                                    (error)="handleImageError(data.token_id + '-image')"
+                                    onerror="this.src='/assets/images/common/no-image.jpg'"
                                     alt=""
                                 >
                                 <div class="m-8">
