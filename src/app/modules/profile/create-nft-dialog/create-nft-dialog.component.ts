@@ -3,7 +3,10 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject, catchError, of, takeUntil } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
+import { readContract } from '@wagmi/core';
+import { contractABI, contractAddress } from '../../../../../contract';
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const Web3 = require('web3');
 @Component({
   selector: 'app-create-nft-dialog',
   templateUrl: './create-nft-dialog.component.html',
@@ -25,13 +28,14 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initFormGroup();
+    this.getNft();
   }
 
   initFormGroup(): void {
     this.form = this._formBuilder.group({
         price: [null, Validators.required],
         name: [null, Validators.required],
-        fileUpload: [null, Validators.required],
+        fileUpload: [null],
         description: [null]
     });
   }
@@ -39,6 +43,39 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  getNft(): void {
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    contract.methods
+        .getNFT(2)
+        .call({from: this.data})
+        .then((result) => {
+            console.log('NFT created:', result);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+  }
+  submitForm(): void {
+    if (typeof window.ethereum === 'undefined' || this.form.invalid) {
+        return;
+    }
+    const imageTest = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png';
+    const {name, price, description, fileUpload} = this.form.value;
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    // contract.methods.name().call({from: this.data}).then(result => console.log(result));
+    contract.methods
+        .createNFT(name, imageTest, price, description)
+        .send({from: this.data})
+        .then((result) => {
+            console.log('NFT created:', result);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
   }
 
   onCancelForm(itemRef: any): void {
@@ -63,15 +100,5 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
         return '';
     }
     return value.substr(0, 4) + '....' + value.substr(-4);
-}
-
-  submitForm(): void {
-    this.toastr.success('NFT đã được tạo thành công');
-    if (this.form.invalid) {
-      return;
-    }
-
-    console.log(this.form);
   }
-
 }
