@@ -1,24 +1,35 @@
-import {Component, OnDestroy, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    AfterViewInit,
+} from '@angular/core';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    NgForm,
+    Validators,
+} from '@angular/forms';
 import { NFTService } from 'app/services/nft.service';
-import {Subject, takeUntil, switchMap, catchError, of} from 'rxjs';
+import { Subject, takeUntil, switchMap, catchError, of } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { DialogCreateNFTComponent } from './create-nft-dialog/create-nft-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-
     matDialogConfig: MatDialogConfig = {
         width: '70vw',
         panelClass: 'custom-mat-dialog',
         disableClose: true,
-        autoFocus: false
+        autoFocus: false,
     };
 
     destroy$ = new Subject<any>();
@@ -40,12 +51,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     showCreateNFT(): void {
-        this._dialog.open(DialogCreateNFTComponent, {
-            ...this.matDialogConfig,
-            data: this.profileData.state.data.account
-        }).afterClosed().subscribe((result) => {
-            console.log(result);
-        });
+        this._dialog
+            .open(DialogCreateNFTComponent, {
+                ...this.matDialogConfig,
+                data: this.profileData.state.data.account,
+            })
+            .afterClosed()
+            .subscribe((result) => {
+                console.log(result);
+            });
     }
 
     getNftByWallet(): void {
@@ -56,24 +70,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
         console.log(account);
         let chainId = null;
         if (chain) {
-            chainId = chain.id === 11155111 && chain.unsupported ? '0xaa36a7' : '0x' + chain.id;
+            chainId =
+                chain.id === 11155111 && chain.unsupported
+                    ? '0xaa36a7'
+                    : '0x' + chain.id;
         }
-        this._nftService.getNFTByWallet('0xd8da6bf26964af9d7eed9e03e53415d37aa96045', chainId) // TODO: change for later
+        this._nftService
+            .getNFTByWallet(account, chainId) // TODO: change for later
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 if (!data) {
                     return;
                 }
-                this.nfts = data.result.map((item) => {
-                    if (item.metadata) {
-                        return {
-                            ...item,
-                            metadata: JSON.parse(item.metadata)
-                        };
-                    }
-                })
-                .slice(0, 50)
-                .filter(f => f);
+                this.nfts = data.result
+                    .map((item) => {
+                        if (item.metadata) {
+                            return {
+                                ...item,
+                                metadata: JSON.parse(item.metadata),
+                            };
+                        }
+                    })
+                    .slice(0, 50)
+                    .filter((f: any) => f);
+                console.log(this.nfts);
             });
     }
 
@@ -82,8 +102,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
             return;
         }
         const { account, chain } = this.profileData.state.data;
-        const chainId = chain.id === 11155111 && chain.unsupported ? '0xaa36a7' : '0x' + chain.id;
-        this._nftService.getTransactionByWallet(account, chainId)
+        const chainId =
+            chain.id === 11155111 && chain.unsupported
+                ? '0xaa36a7'
+                : '0x' + chain.id;
+        this._nftService
+            .getTransactionByWallet(account, chainId)
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 this.transactions = data.result;
@@ -93,7 +117,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     selectedTableChange(event: MatTabChangeEvent): void {
         console.log(event);
-        switch(event.index) {
+        switch (event.index) {
             case 0: {
                 this.getNftByWallet();
                 break;
@@ -110,7 +134,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     viewDetailNFT(nftData): void {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        const {token_address, token_id} = nftData;
+        const { token_address, token_id } = nftData;
         void this._router.navigate([`/nft/view/${token_address}/${token_id}`]);
     }
 
@@ -122,7 +146,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     getImageFromMetaData(imgUrl: string): string {
-        if (!imgUrl || imgUrl && !imgUrl.includes('ipfs://')) {
+        if (!imgUrl || (imgUrl && !imgUrl.includes('ipfs://'))) {
             return imgUrl;
         }
         const image = imgUrl.split('ipfs://')[1];
@@ -133,11 +157,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const newImageUrl = imageUrl
             .split(delimiter)
             .filter((item) => {
-            if (item === searchString) {
-                count++;
-                return count <= 1;
-            }
-            return true;
+                if (item === searchString) {
+                    count++;
+                    return count <= 1;
+                }
+                return true;
             })
             .join(delimiter);
 
@@ -149,8 +173,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         image.src = 'https://testnets.opensea.io/static/images/placeholder.png';
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.token_id || index;
     }
 
@@ -158,5 +181,4 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.destroy$.next(1);
         this.destroy$.complete();
     }
-
 }

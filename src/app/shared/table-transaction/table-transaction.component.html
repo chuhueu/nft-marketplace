@@ -35,7 +35,7 @@
         </ng-container>
 
         <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef>Price (USD)</th>
+            <th mat-header-cell *matHeaderCellDef>Price (wei)</th>
             <td mat-cell *matCellDef="let record">{{formatPrice(record.price ?? record.value)}} </td>
         </ng-container>
     </table>

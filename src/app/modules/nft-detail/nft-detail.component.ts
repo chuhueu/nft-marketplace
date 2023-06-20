@@ -1,20 +1,26 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+    Component,
+    ViewEncapsulation,
+    OnInit,
+    OnDestroy,
+    ChangeDetectorRef,
+} from '@angular/core';
 import { NFTService } from 'app/services/nft.service';
-import {catchError, forkJoin, of, Subject, takeUntil, } from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import { catchError, forkJoin, of, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { getAccount } from '@wagmi/core';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogWarningComponent } from 'app/shared/dialog-warning/dialog-warning.component';
+import { oneEth } from 'app/constant';
 @Component({
     selector: 'app-nft-detail',
     templateUrl: './nft-detail.component.html',
     styleUrls: ['./nft-detail.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
-export class NFTDetailComponent implements OnInit, OnDestroy
-{
+export class NFTDetailComponent implements OnInit, OnDestroy {
     tokenAddressTemporary = '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D';
     nftDetail: any = null;
     nftHistoryTransactions: any[] = [];
@@ -31,10 +37,11 @@ export class NFTDetailComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _toastrService: ToastrService,
         public dialog: MatDialog
-    ){}
+    ) {}
 
     ngOnInit(): void {
-        this.selectedTokenAddress = this._route.snapshot.paramMap.get('tokenAddress');
+        this.selectedTokenAddress =
+            this._route.snapshot.paramMap.get('tokenAddress');
         this.selectedTokenId = this._route.snapshot.paramMap.get('tokenId');
         this.getNFTDetail();
         // this.getHistoryTransactions();
@@ -43,13 +50,15 @@ export class NFTDetailComponent implements OnInit, OnDestroy
     }
 
     getNFTDetail(): void {
-        const getNftDetail$ = this._ntfService.getNFTOwners(this.selectedTokenAddress, this.selectedTokenId);
-        const getNFTHistoryTransactions$ = this._ntfService.getNFTTrades(this.selectedTokenAddress);
+        const getNftDetail$ = this._ntfService.getNFTOwners(
+            this.selectedTokenAddress,
+            this.selectedTokenId
+        );
+        const getNFTHistoryTransactions$ = this._ntfService.getNFTTrades(
+            this.selectedTokenAddress
+        );
 
-        forkJoin([
-            getNftDetail$,
-            getNFTHistoryTransactions$
-        ])
+        forkJoin([getNftDetail$, getNFTHistoryTransactions$])
             .pipe(
                 catchError(() => of([])),
                 takeUntil(this.destroy$)
@@ -57,16 +66,18 @@ export class NFTDetailComponent implements OnInit, OnDestroy
             .subscribe(([nftDetail, nftHistoryTransactions]) => {
                 this.nftDetail = {
                     ...nftDetail.result[0],
-                    metadata: JSON.parse(nftDetail.result[0].metadata)
+                    metadata: JSON.parse(nftDetail.result[0].metadata),
                 };
+                console.log(this.nftDetail);
                 this.nftHistoryTransactions = nftHistoryTransactions.result;
-                this.priceEth = (parseFloat(this.nftHistoryTransactions[0].price))/this.priceEthDefault;
+                this.priceEth =
+                    parseFloat(this.nftHistoryTransactions[0].price) / oneEth;
                 this._changeDetectorRef.markForCheck();
             });
     }
 
     getImageFromMetaData(imgUrl: string): string {
-        if (!imgUrl || imgUrl && !imgUrl.includes('ipfs://')) {
+        if (!imgUrl || (imgUrl && !imgUrl.includes('ipfs://'))) {
             return imgUrl;
         }
         const image = imgUrl.split('ipfs://')[1];
@@ -77,19 +88,17 @@ export class NFTDetailComponent implements OnInit, OnDestroy
         const newImageUrl = imageUrl
             .split(delimiter)
             .filter((item) => {
-            if (item === searchString) {
-                count++;
-                return count <= 1;
-            }
-            return true;
+                if (item === searchString) {
+                    count++;
+                    return count <= 1;
+                }
+                return true;
             })
             .join(delimiter);
-
         return newImageUrl;
     }
 
-    handleImageError(): void {
-    }
+    handleImageError(): void {}
 
     abbreviatedStr(value: string): string {
         if (!value) {
@@ -103,7 +112,7 @@ export class NFTDetailComponent implements OnInit, OnDestroy
     }
 
     formatPriceToETH(price: string): number {
-        return parseFloat(price)/this.priceEthDefault;
+        return parseFloat(price) / oneEth;
     }
 
     formatPrice(price: string): any {
@@ -115,7 +124,9 @@ export class NFTDetailComponent implements OnInit, OnDestroy
 
     buyNFT(name: string): void {
         if (!this.isLoggedIn) {
-            this._toastrService.warning('Bạn phải kết nối tới ví điện tử thì mới có thể thực hiện giao dịch');
+            this._toastrService.warning(
+                'Bạn phải kết nối tới ví điện tử thì mới có thể thực hiện giao dịch'
+            );
             return;
         }
         this._toastrService.success('Bạn đã mua thành công NFT ' + name);
@@ -126,9 +137,7 @@ export class NFTDetailComponent implements OnInit, OnDestroy
         this.destroy$.complete();
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.token_id || index;
     }
-
 }

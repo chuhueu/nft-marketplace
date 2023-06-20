@@ -59,7 +59,7 @@
                 <mat-tab label="Transactions">
                     <fuse-card class="block p-6">
                         <ng-container *ngIf="transactions.length > 0;  else noData">
-                            <app-table-transaction [isSetMaxHeight]="false" [dataTable]="transactions"></app-table-transaction>
+                            <app-table-transaction [isSetMaxHeight]="true" [dataTable]="transactions"></app-table-transaction>
                         </ng-container>
                     </fuse-card>
                 </mat-tab>

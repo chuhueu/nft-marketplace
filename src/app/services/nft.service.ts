@@ -4,22 +4,20 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NFTService {
     /**
      * Constructor
      */
     apiUrl = `${environment.apiUrl}/nft`;
-    constructor(
-        private _httpService: HttpClient
-    ) {}
+    constructor(private _httpService: HttpClient) {}
 
     getNFTTrades(tokenAddress: string): Observable<any> {
         return this._httpService.get(`${this.apiUrl}/trades`, {
             params: {
-                contractAddress: tokenAddress
-            }
+                contractAddress: tokenAddress,
+            },
         });
     }
 
@@ -27,26 +25,32 @@ export class NFTService {
         return this._httpService.get(`${this.apiUrl}/search`, {
             params: {
                 searchTerm: searchTerm ?? 'art',
-                field: filterByField ?? 'name'
-            }
+                field: filterByField ?? 'name',
+            },
         });
     }
 
     getNFTOwners(address: string, tokenId: string): Observable<any> {
         return this._httpService.get(`${this.apiUrl}/owners`, {
-            params: {address, tokenId}
+            params: { address, tokenId },
         });
     }
 
     getNFTByWallet(address: string, chain: string): Observable<any> {
         return this._httpService.get(`${this.apiUrl}/wallet`, {
-            params: {address, chain}
+            params: { address, chain },
+        });
+    }
+
+    getNFTByContract(address: string, chain: string): Observable<any> {
+        return this._httpService.get(`${this.apiUrl}/contract`, {
+            params: { address, chain },
         });
     }
 
     getTransactionByWallet(address: string, chain: string): Observable<any> {
         return this._httpService.get(`${this.apiUrl}/transactions`, {
-            params: {address, chain}
+            params: { address, chain },
         });
     }
 }

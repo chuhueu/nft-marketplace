@@ -54,10 +54,11 @@ export class TableTransactionComponent implements OnInit, OnDestroy
     }
 
     formatPrice(price: string): any {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(parseFloat(price));
+        return parseFloat(price);
+        // return new Intl.NumberFormat('en-US', {
+        //     style: 'currency',
+        //     currency: 'USD',
+        // }).format(parseFloat(price));
     }
 
     ngOnDestroy(): void {
