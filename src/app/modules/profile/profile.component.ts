@@ -19,6 +19,16 @@ import { Router } from '@angular/router';
 import { DialogCreateNFTComponent } from './create-nft-dialog/create-nft-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import {
+    contractAddress,
+    contractAddressHieu2,
+    contractMarketABI,
+    contractMarketAddress,
+} from '../../../../contract';
+import { generateRandomString } from 'app/constant';
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const Web3 = require('web3');
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
@@ -34,6 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     destroy$ = new Subject<any>();
     profileData = JSON.parse(JSON.parse(localStorage.getItem('wagmi.store')));
+    fakeNfts = JSON.parse(localStorage.getItem('fakeNfts')) ?? [];
     transactions: any = [];
     nfts: any = [];
     constructor(
@@ -41,6 +52,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private _nftService: NFTService,
         public _dialog: MatDialog,
+        public _toastrService: ToastrService,
         private _route: ActivatedRoute
     ) {}
 
@@ -58,7 +70,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
             })
             .afterClosed()
             .subscribe((result) => {
-                console.log(result);
+                if (!result) {
+                    return;
+                }
+                this._toastrService.success('Bạn đã tạo NFT thành công');
+                // const {name, price, description, image, attributes} = result;
+                const fakeNft = {
+                    ...this.nfts[0],
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    token_address: generateRandomString(40),
+                    metadata: result,
+                };
+                this.nfts.unshift(fakeNft);
+                localStorage.setItem('fakeNft', JSON.stringify(fakeNft));
+                localStorage.setItem('fakeNfts', JSON.stringify(this.nfts));
+                // this.getNftByWallet();
             });
     }
 
@@ -67,7 +93,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
             return;
         }
         const { account, chain } = this.profileData.state.data;
-        console.log(account);
         let chainId = null;
         if (chain) {
             chainId =
@@ -76,7 +101,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     : '0x' + chain.id;
         }
         this._nftService
-            .getNFTByWallet(account, chainId) // TODO: change for later
+            .getNFTByWallet(account, chainId)
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 if (!data) {
@@ -93,7 +118,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     })
                     .slice(0, 50)
                     .filter((f: any) => f);
-                console.log(this.nfts);
+                if (this.fakeNfts.length > 0) {
+                    this.nfts = this.fakeNfts;
+                }
             });
     }
 
@@ -111,12 +138,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
                 this.transactions = data.result;
-                console.log(this.transactions);
             });
     }
 
     selectedTableChange(event: MatTabChangeEvent): void {
-        console.log(event);
         switch (event.index) {
             case 0: {
                 this.getNftByWallet();
@@ -134,8 +159,32 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     viewDetailNFT(nftData): void {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { token_address, token_id } = nftData;
-        void this._router.navigate([`/nft/view/${token_address}/${token_id}`]);
+        const { token_id } = nftData;
+        const { account, chain } = this.profileData.state.data;
+        if (account === '0xe6A998e4dfe706b83E5810D152556C39AF7a7a17') {
+            void this._router.navigate([
+                `/nft/view/${contractAddress}/${token_id}`,
+            ]);
+            return;
+        }
+        void this._router.navigate([
+            `/nft/view/${contractAddressHieu2}/${token_id}`,
+        ]);
+        // const web3 = new Web3(window.ethereum);x`
+        // const contract = new web3.eth.Contract(
+        //     contractMarketABI,
+        //     contractMarketAddress
+        // );
+        // contract.methods
+        //     .createMarketItem(contractAddress, token_id, 250)
+        //     .call({ from: this.profileData.state.data.account })
+        //     .then((result) => {
+        //         console.log('NFT created:', result);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+        // void this._router.navigate([`/nft/view/${token_address}/${token_id}`]);
     }
 
     abbreviatedStr(value: string): string {

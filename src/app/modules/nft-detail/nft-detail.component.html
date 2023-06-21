@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                             <div class="mt-5 flex gap-2">
-                                <div class="font-bold">Contract Address:</div>
+                                <div class="font-bold">Token Address:</div>
                                 <div
                                     [matTooltip]="nftDetail.token_address"
                                     class="font-medium text-primary">
@@ -49,21 +49,21 @@
                             </div>
                             <div class="mt-5 p-6 box">
                                 <div>Current price</div>
-                                <div class="font-bold text-4xl">{{priceEth}} ETH</div>
-                                <div>{{formatPrice(priceEth * priceEthDefault)}}</div>
+                                <div class="font-bold text-4xl">{{priceEth ? priceEth : 0.001}} ETH</div>
+                                <div>{{formatPrice((priceEth ? priceEth : 0.001) * priceEthDefault)}}</div>
                                 <div class="mt-3 flex items-center gap-3">
-                                    <button mat-flat-button color="primary" (click)="buyNFT(nftDetail.name)">
+                                    <button mat-flat-button color="primary" (click)="buyNFT(nftDetail)">
                                         <div class="flex items-center gap-2">
                                             <mat-icon [svgIcon]="'heroicons_outline:shopping-bag'"></mat-icon>
                                             <div>Buy now</div>
                                         </div>
                                     </button>
-                                    <button mat-stroked-button color="primary">
+                                    <!-- <button mat-stroked-button color="primary">
                                         <div class="flex items-center gap-2">
                                             <mat-icon [svgIcon]="'heroicons_outline:tag'"></mat-icon>
                                             <div>Make offer</div>
                                         </div>
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                         </div>

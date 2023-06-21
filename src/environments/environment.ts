@@ -4,7 +4,16 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8080'
+    apiUrl: 'http://localhost:8080',
+    firebaseConfig: {
+        apiKey: 'AIzaSyCF2m5m57xg_ortfBPdzdrdidWCwKT7sjM',
+        authDomain: 'shopee-bhsoft-upload.firebaseapp.com',
+        projectId: 'shopee-bhsoft-upload',
+        storageBucket: 'shopee-bhsoft-upload.appspot.com',
+        messagingSenderId: '571847159061',
+        appId: '1:571847159061:web:b5df4eb1cfc490f241cd1c',
+        measurementId: 'G-7S322HHQKJ',
+    },
 };
 
 /*

@@ -30,9 +30,13 @@ export class NFTService {
         });
     }
 
-    getNFTOwners(address: string, tokenId: string): Observable<any> {
+    getNFTOwners(
+        address: string,
+        tokenId: string,
+        chain: string
+    ): Observable<any> {
         return this._httpService.get(`${this.apiUrl}/owners`, {
-            params: { address, tokenId },
+            params: { address, tokenId, chain },
         });
     }
 
@@ -52,5 +56,9 @@ export class NFTService {
         return this._httpService.get(`${this.apiUrl}/transactions`, {
             params: { address, chain },
         });
+    }
+
+    getDataTokenURI(tokenUri: string): Observable<any> {
+        return this._httpService.get(tokenUri);
     }
 }

@@ -119,10 +119,10 @@
 </div>
 
 <div mat-dialog-actions class="flex items-center border-t mt-4 mb-0 px-6 py-4">
-  <button mat-flat-button color="primary" (click)="submitForm()" form="formNft">
+  <button mat-flat-button color="primary" [disabled]="isSubmitting" (click)="submitForm()" form="formNft">
       Create
   </button>
-  <button mat-stroked-button class="ml-2" (click)="onCancelForm(false)">
+  <button mat-stroked-button class="ml-2" [disabled]="isSubmitting" (click)="onCancelForm(false)">
       Cancel
   </button>
 </div>
