@@ -45,6 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     destroy$ = new Subject<any>();
     profileData = JSON.parse(JSON.parse(localStorage.getItem('wagmi.store')));
     fakeNfts = JSON.parse(localStorage.getItem('fakeNfts')) ?? [];
+    soldNft = JSON.parse(localStorage.getItem('soldNft')) ?? null;
     transactions: any = [];
     nfts: any = [];
     constructor(
@@ -82,9 +83,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     metadata: result,
                 };
                 this.nfts.unshift(fakeNft);
-                localStorage.setItem('fakeNft', JSON.stringify(fakeNft));
-                localStorage.setItem('fakeNfts', JSON.stringify(this.nfts));
-                // this.getNftByWallet();
+                const fakeNftLocal = {
+                    account: this.profileData.state.data.account,
+                    data: fakeNft,
+                };
+                const fakeNftsLocal = {
+                    account: this.profileData.state.data.account,
+                    data: this.nfts,
+                };
+                localStorage.setItem('fakeNft', JSON.stringify(fakeNftLocal));
+                localStorage.setItem('fakeNfts', JSON.stringify(fakeNftsLocal));
+                setTimeout(() => {
+                    this.getNftByWallet();
+                }, 3000);
             });
     }
 
@@ -118,8 +129,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     })
                     .slice(0, 50)
                     .filter((f: any) => f);
-                if (this.fakeNfts.length > 0) {
+                if (
+                    this.fakeNfts === account &&
+                    this.fakeNfts.data.length > 0
+                ) {
                     this.nfts = this.fakeNfts;
+                }
+                if (this.soldNft) {
+                    this.nfts = this.nfts.filter(
+                        (nft: any) =>
+                            nft.token_address !== this.soldNft.token_address
+                    );
                 }
             });
     }

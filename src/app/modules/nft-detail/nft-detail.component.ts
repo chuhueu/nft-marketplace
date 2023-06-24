@@ -22,7 +22,11 @@ import {
     contractHieu2ABI,
 } from '../../../../contract';
 // eslint-disable-next-line @typescript-eslint/naming-convention
+import { ExportAsConfig, SupportedExtensions } from 'ngx-export-as';
+import { ExportAsService } from 'app/services/export.service';
+
 const Web3 = require('web3');
+
 @Component({
     selector: 'app-nft-detail',
     templateUrl: './nft-detail.component.html',
@@ -42,6 +46,16 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
     priceEth: number = 0;
     isLoggedIn = false;
     isSubmitting = false;
+    exportConfig: ExportAsConfig = {
+        type: 'csv',
+        elementIdOrContent: 'transactionTableId',
+        options: {
+            orientation: 'landscape',
+            margins: {
+                top: '20',
+            },
+        },
+    };
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
@@ -49,7 +63,8 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _toastrService: ToastrService,
         public dialog: MatDialog,
-        private _fuseLoadingService: FuseLoadingService
+        private _fuseLoadingService: FuseLoadingService,
+        private _exportAsService: ExportAsService
     ) {}
 
     ngOnInit(): void {
@@ -63,9 +78,12 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
     }
 
     getNFTDetail(): void {
-        if (this.selectedTokenAddress === this.fakeNftDetail.token_address) {
-            this.nftDetail = this.fakeNftDetail;
-            this.priceEth = this.fakeNftDetail.metadata.price ?? 0.001;
+        if (
+            this.selectedTokenAddress ===
+            this.fakeNftDetail?.data?.token_address
+        ) {
+            this.nftDetail = this.fakeNftDetail.data;
+            this.priceEth = this.fakeNftDetail.data.metadata.price ?? 0.001;
             return;
         }
         let chainId = null;
@@ -95,10 +113,11 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
                     ...nftDetail.result[0],
                     metadata: JSON.parse(nftDetail.result[0].metadata),
                 };
+                console.log(this.nftDetail, this.fakeNftDetail);
                 this.nftHistoryTransactions = nftHistoryTransactions.result;
                 this.priceEth =
-                    parseFloat(this.nftHistoryTransactions[0].price) / oneEth ??
-                    0.001;
+                    parseFloat(this.nftHistoryTransactions[0]?.price) /
+                        oneEth ?? 0.001;
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -149,6 +168,15 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
         }).format(parseFloat(price));
     }
 
+    exportAs(type: SupportedExtensions) {
+        const filename = 'transaction' + moment().format('DD-MMM-YY');
+        this.exportConfig.type = type;
+
+        this._exportAsService
+            .save(this.exportConfig, filename)
+            .subscribe(() => {});
+    }
+
     buyNFT(data: any): void {
         if (!this.isLoggedIn) {
             this._toastrService.warning(
@@ -164,6 +192,8 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
         this._fuseLoadingService.show();
         const web3 = new Web3(window.ethereum);
         const contract = new web3.eth.Contract(
+            // contractABI,
+            // contractAddress
             contractHieu2ABI,
             contractAddressHieu2
         );
@@ -179,6 +209,17 @@ export class NFTDetailComponent implements OnInit, OnDestroy {
                         data.metadata.name ?? data.name
                     }`
                 );
+                if (
+                    this.selectedTokenAddress ===
+                    this.fakeNftDetail?.data?.token_address
+                ) {
+                    localStorage.setItem(
+                        'soldNft',
+                        JSON.stringify(this.fakeNftDetail.data)
+                    );
+                    return;
+                }
+                localStorage.setItem('soldNft', JSON.stringify(this.nftDetail));
             })
             .catch((error) => {
                 this._fuseLoadingService.hide();

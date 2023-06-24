@@ -15,11 +15,6 @@ import { FuseLoadingService } from '@fuse/services/loading';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const Web3 = require('web3');
 
-export enum FakeDataJson {
-    demo1 = 'demo 1',
-    demo2 = 'demo 2',
-    demo3 = 'demo 3',
-}
 @Component({
     selector: 'app-create-nft-dialog',
     templateUrl: './create-nft-dialog.component.html',
@@ -35,23 +30,23 @@ export class DialogCreateNFTComponent implements OnInit, OnDestroy {
     isSubmitting = false;
     fakeDemo = [
         {
-            name: 'demo 1',
+            name: 'picture 1',
             index: 1,
         },
         {
-            name: 'demo 2',
+            name: 'picture 2',
             index: 2,
         },
         {
-            name: 'demo 3',
+            name: 'picture 3',
             index: 3,
         },
         {
-            name: 'demo 4',
+            name: 'picture 4',
             index: 4,
         },
         {
-            name: 'demo 5',
+            name: 'picture 5',
             index: 5,
         },
     ];

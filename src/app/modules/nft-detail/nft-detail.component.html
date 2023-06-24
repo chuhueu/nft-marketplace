@@ -74,7 +74,7 @@
                                 <div class="p-2 text-xl font-semibold leading-6 tracking-tight text-primary mb-2 truncate">
                                     Transaction
                                 </div>
-                                <button mat-stroked-button color="primary">
+                                <button mat-stroked-button color="primary" (click)="exportAs('xlsx')">
                                     <div class="flex items-center gap-2">
                                         <mat-icon [svgIcon]="'heroicons_outline:download'"></mat-icon>
                                         <div>Download transaction</div>

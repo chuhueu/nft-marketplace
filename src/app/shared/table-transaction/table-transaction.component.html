@@ -1,4 +1,4 @@
-<div class="overflow-x-auto" [class]="{'max-height-400': isSetMaxHeight}">
+<div class="overflow-x-auto" id="transactionTableId" [class]="{'max-height-400': isSetMaxHeight}">
     <table mat-table class="w-full" [dataSource]="dataSource">
         <tr mat-header-row *matHeaderRowDef="tableColumn"></tr>
         <tr mat-row *matRowDef="let row; columns: tableColumn"></tr>

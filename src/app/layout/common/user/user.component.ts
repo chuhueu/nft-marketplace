@@ -119,6 +119,7 @@ export class UserComponent implements OnInit, OnDestroy
         this._userService.signOut().subscribe();
         disconnect();
         this.isLoggedIn = false;
+        localStorage.clear();
         this._toastrService.success('Bạn đã đăng xuất');
     }
 
